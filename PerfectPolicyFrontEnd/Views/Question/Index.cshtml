@@ -25,7 +25,7 @@
                 @Html.DisplayNameFor(model => model.QuestionImage)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Creator)
+                @Html.DisplayNameFor(model => model.QuizTitle)
             </th>
             <th></th>
         </tr>
@@ -46,7 +46,7 @@
                 @Html.DisplayFor(modelItem => item.QuestionImage)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Creator)
+                @Html.DisplayFor(modelItem => item.QuizTitle)
             </td>
             <td>
                 @Html.ActionLink("Edit", "Edit", new {  id=item.QuestionID  }) |

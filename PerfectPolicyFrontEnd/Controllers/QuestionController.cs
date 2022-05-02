@@ -68,13 +68,13 @@ namespace PerfectPolicyFrontEnd.Controllers
         {
             var quizs = _apiQuizRequest.GetAll("Quiz");
 
-            var creatorDropDownListModel = quizs.Select(c => new SelectListItem
+            var titleDropDownListModel = quizs.Select(c => new SelectListItem
             {
-                Text = c.Creator,
-                Value = c.Creator.ToString()
+                Text = c.Title,
+                Value = c.Title
             }).ToList();
 
-            ViewData.Add("creatorDDL", creatorDropDownListModel);
+            ViewData.Add("titleDDL", titleDropDownListModel);
 
             return View();
         }
@@ -91,8 +91,8 @@ namespace PerfectPolicyFrontEnd.Controllers
                     QuestionTopic = question.QuestionTopic,
                     QuestionText = question.QuestionText,
                     QuestionImage = question.QuestionImage,
-                    Creator = question.Creator
-                    
+                    QuizTitle = question.QuizTitle
+
                 };
 
             _apiRequest.Create(questionController, createdQuestion);
@@ -117,7 +117,7 @@ namespace PerfectPolicyFrontEnd.Controllers
         // POST: QuestionController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(int id, Question question)
         {
             //if (isNotAuthenticated())
             //{
@@ -126,6 +126,8 @@ namespace PerfectPolicyFrontEnd.Controllers
 
             try
             {
+                _apiRequest.Edit(questionController, question, id);
+
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -137,7 +139,9 @@ namespace PerfectPolicyFrontEnd.Controllers
         // GET: QuestionController/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            Question question = _apiRequest.GetSingle(questionController, id);
+
+            return View(question);
         }
 
         // POST: QuestionController/Delete/5
@@ -145,13 +149,13 @@ namespace PerfectPolicyFrontEnd.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, IFormCollection collection)
         {
-            //if (isNotAuthenticated())
-            //{
-            //    return RedirectToAction("Login", "Auth");
-            //}                    
 
             try
             {
+                if (!AuthenticationHelper.isAuthenticated(this.HttpContext))
+                {
+                    return RedirectToAction("Login", "Auth");
+                }
                 _apiRequest.Delete(questionController, id);
 
                 return RedirectToAction(nameof(Index));

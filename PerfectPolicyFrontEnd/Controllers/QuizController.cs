@@ -176,6 +176,7 @@ namespace PerfectPolicyFrontEnd.Controllers
             Quiz quiz = _apiRequest.GetSingle(quizController, id);
 
             return View(quiz);
+
         }
 
         // POST: QuizController/Delete/5
