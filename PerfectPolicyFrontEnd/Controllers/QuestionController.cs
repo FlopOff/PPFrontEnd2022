@@ -71,7 +71,7 @@ namespace PerfectPolicyFrontEnd.Controllers
             var titleDropDownListModel = quizs.Select(c => new SelectListItem
             {
                 Text = c.Title,
-                Value = c.Title
+                Value = c.QuizID.ToString()
             }).ToList();
 
             ViewData.Add("titleDDL", titleDropDownListModel);
@@ -91,7 +91,7 @@ namespace PerfectPolicyFrontEnd.Controllers
                     QuestionTopic = question.QuestionTopic,
                     QuestionText = question.QuestionText,
                     QuestionImage = question.QuestionImage,
-                    QuizTitle = question.QuizTitle
+                    QuizID = question.QuizID
 
                 };
 
@@ -139,6 +139,7 @@ namespace PerfectPolicyFrontEnd.Controllers
         // GET: QuestionController/Delete/5
         public ActionResult Delete(int id)
         {
+
             Question question = _apiRequest.GetSingle(questionController, id);
 
             return View(question);

@@ -13,7 +13,8 @@ namespace PerfectPolicyFrontEnd.Models.QuestionModels
         public string QuestionText { get; set; }
         public string QuestionImage { get; set; }
 
-        public string QuizTitle { get; set; }
+        //public string QuizTitle { get; set; }
+        public int QuizID { get; set; }
 
         public Quiz quiz { get; set; }
         //public ICollection<Option> Options { get; set; }

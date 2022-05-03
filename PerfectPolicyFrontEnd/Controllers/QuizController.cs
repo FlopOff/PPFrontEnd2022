@@ -43,10 +43,7 @@ namespace PerfectPolicyFrontEnd.Controllers
 
             return View(quizList);
         }
-        //{           
-        //    var result = collection["creatorDDL"].ToString();
-        //    return RedirectToAction("Index", new { filter = result });
-        //}
+
         private bool isAuthenticated()
         {
             return HttpContext.Session.Keys.Any(c => c.Equals("Token"));
@@ -109,6 +106,10 @@ namespace PerfectPolicyFrontEnd.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(QuizCreate quiz)
         {
+            if (!AuthenticationHelper.isAuthenticated(this.HttpContext))
+            {
+                return RedirectToAction("Login", "Auth");
+            }
             try
             {
                 Quiz createdQuiz = new Quiz()
