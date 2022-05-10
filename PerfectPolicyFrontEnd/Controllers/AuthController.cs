@@ -23,7 +23,7 @@ namespace PerfectPolicyFrontEnd.Controllers
 
             using (HttpClient client = new HttpClient())
             {
-                client.BaseAddress = new Uri("https://localhost:44362/api/");
+                client.BaseAddress = new Uri("https://localhost:44379/api/");
 
                 var response = client.PostAsJsonAsync("Auth/GenerateToken", user).Result;
 
