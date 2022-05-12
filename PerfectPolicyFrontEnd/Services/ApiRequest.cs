@@ -86,7 +86,7 @@ namespace PerfectPolicyFrontEnd.Services
         /// <param name="endpointName"></param>
         /// <param name="id"></param>
         /// <returns></returns>
-        public List<T> GetAllForParentId(string controllerName, string endpointName, int id)
+        public List<T> GetAllForParentId(string controllerName, string endpointName, string id)
         {
             var response = _client.GetAsync($"{controllerName}/{endpointName}/{id}").Result;
 
@@ -94,5 +94,15 @@ namespace PerfectPolicyFrontEnd.Services
 
             return responseEntities;
         }
+
+        public List<T> GetAllForParentQId(string controllerName, string endpointName, int id)
+        {
+            var response = _client.GetAsync($"{controllerName}/{endpointName}/{id}").Result;
+
+            var responseEntities = response.Content.ReadAsAsync<List<T>>().Result;
+
+            return responseEntities;
+        }
+
     }
 }

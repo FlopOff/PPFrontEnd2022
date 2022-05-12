@@ -50,9 +50,20 @@ namespace PerfectPolicyFrontEnd.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
 
-        public ActionResult QuestionsForQuiz(int id)
+        public ActionResult QuestionsForQuiz(string id)
         {
-            List<Question> questions = _apiRequest.GetAllForParentId(questionController, "QuestionsForQuizID", id);
+            //Question question = new Question();
+            //if (question.QuizTitle == quizs.Select(c => new SelectListItem
+            //{
+            //    Text = c.Title,
+            //    Value = c.Title
+            //}).ToString())
+            //{ 
+            
+            //}
+            //WILL POSSIBLY USE IN CONNECTING QUESTION BUTTON FROM QUIZ PAGE.
+
+            List <Question> questions = _apiRequest.GetAllForParentId(questionController, "QuestionsForQuizTitle", id);
             return View("Index", questions);
         }
 
@@ -68,13 +79,13 @@ namespace PerfectPolicyFrontEnd.Controllers
         {
             var quizs = _apiQuizRequest.GetAll("Quiz");
 
-            var creatorDropDownListModel = quizs.Select(c => new SelectListItem
+            var quizDropDownList = quizs.Select(c => new SelectListItem
             {
-                Text = c.Creator,
-                Value = c.Creator.ToString()
+                Text = c.Title,
+                Value = c.Title
             }).ToList();
 
-            ViewData.Add("creatorDDL", creatorDropDownListModel);
+            ViewData.Add("quizDDL", quizDropDownList);
 
             return View();
         }
@@ -91,7 +102,7 @@ namespace PerfectPolicyFrontEnd.Controllers
                     QuestionTopic = question.QuestionTopic,
                     QuestionText = question.QuestionText,
                     QuestionImage = question.QuestionImage,
-                    Creator = question.Creator
+                    Title = question.Title
                     
                 };
 
@@ -137,8 +148,16 @@ namespace PerfectPolicyFrontEnd.Controllers
         // GET: QuestionController/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            if (!AuthenticationHelper.isAuthenticated(this.HttpContext))
+            {
+                return RedirectToAction("Login", "Auth");
+            }
+
+            Question question = _apiRequest.GetSingle(questionController, id);
+
+            return View(question);
         }
+
 
         // POST: QuestionController/Delete/5
         [HttpPost]
@@ -152,6 +171,12 @@ namespace PerfectPolicyFrontEnd.Controllers
 
             try
             {
+
+                if (!AuthenticationHelper.isAuthenticated(this.HttpContext))
+                {
+                    return RedirectToAction("Login", "Auth");
+                }
+
                 _apiRequest.Delete(questionController, id);
 
                 return RedirectToAction(nameof(Index));

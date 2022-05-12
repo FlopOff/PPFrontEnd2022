@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
 
 namespace PerfectPolicyFrontEnd.Controllers
 {
@@ -19,10 +20,13 @@ namespace PerfectPolicyFrontEnd.Controllers
 
         private readonly string optionController = "Option";
 
+       
+
         public OptionController(IApiRequest<Option> apiRequest, IApiRequest<Question> apiQuestionRequest)
         {
             _apiRequest = apiRequest;
             _apiQuestionRequest = apiQuestionRequest;
+            
         }
         private bool isNotAuthenticated()
         {
@@ -44,7 +48,7 @@ namespace PerfectPolicyFrontEnd.Controllers
 
         public ActionResult OptionsForQuestion(int id)
         {
-            List<Option> options = _apiRequest.GetAllForParentId(optionController, "OptionsForQuestionID", id);
+            List<Option> options = _apiRequest.GetAllForParentQId(optionController, "OptionsForQuestionID", id);
             return View("Index", options);
         }
 
@@ -101,13 +105,15 @@ namespace PerfectPolicyFrontEnd.Controllers
         // GET: OptionController/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            Option option = _apiRequest.GetSingle(optionController, id);
+
+            return View(option);
         }
 
         // POST: OptionController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(int id, Option option)
         {
             //if (isNotAuthenticated())
             //{
@@ -116,6 +122,7 @@ namespace PerfectPolicyFrontEnd.Controllers
 
             try
             {
+                
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -127,7 +134,13 @@ namespace PerfectPolicyFrontEnd.Controllers
         // GET: OptionController/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            if (!AuthenticationHelper.isAuthenticated(this.HttpContext))
+            {
+                return RedirectToAction("Login", "Auth");
+            }
+            Option option = _apiRequest.GetSingle(optionController, id);
+
+            return View(option);
         }
 
         // POST: OptionController/Delete/5
@@ -142,6 +155,12 @@ namespace PerfectPolicyFrontEnd.Controllers
 
             try
             {
+                if (!AuthenticationHelper.isAuthenticated(this.HttpContext))
+                {
+                    return RedirectToAction("Login", "Auth");
+                }
+                _apiRequest.Delete(optionController, id);
+
                 return RedirectToAction(nameof(Index));
             }
             catch

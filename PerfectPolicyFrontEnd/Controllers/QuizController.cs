@@ -32,12 +32,20 @@ namespace PerfectPolicyFrontEnd.Controllers
 
         }
 
-        public ActionResult Index(Company company)
+        //[HttpPost]
+        //public IActionResult QuizFilter(IFormCollection collection, Quiz quiz)
+        //{
+        //    ViewBag.Title = quiz.QuizTitle;
+        //    var result = collection["quizDDL"].ToString();
+        //    return RedirectToAction("Index", new { filter = result });
+        //}
+
+        public ActionResult Index(Quiz quiz)
         {
 
             var quizList = _apiRequest.GetAll(quizController);
 
-
+            Company company = new Company();
             ViewBag.Name = company.CompanyName;
             ;
 
