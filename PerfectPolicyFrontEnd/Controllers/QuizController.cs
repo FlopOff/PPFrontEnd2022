@@ -51,51 +51,11 @@ namespace PerfectPolicyFrontEnd.Controllers
 
             return View(quizList);
         }
-        //{           
-        //    var result = collection["creatorDDL"].ToString();
-        //    return RedirectToAction("Index", new { filter = result });
-        //}
+        
         private bool isAuthenticated()
         {
             return HttpContext.Session.Keys.Any(c => c.Equals("Token"));
         }
-
-
-
-
-
-        // GET: QuizController
-        //public ActionResult Index(string filter = "")
-        //{
-        //    // If we do not have a token in the session 
-        //    //if (!HttpContext.Session.Keys.Any(c => c.Equals("Token")))
-        //    //{
-        //    //    return RedirectToAction("Login", "Auth");
-        //    //}
-
-        //    var quizList = _apiRequest.GetAll(quizController);
-            
-        //    var creatorDDL = quizList.Select(c => new SelectListItem
-        //    {
-        //        Value = c.Creator,
-        //        Text = c.Creator
-        //    });
-
-        //    ViewBag.CreatorDDL = creatorDDL;
-
-        //    if (!String.IsNullOrEmpty(filter))
-        //    {
-        //        var quizfilteredList = quizList.Where(c => c.Creator == filter);
-        //        return View(quizfilteredList);
-
-        //    }
-
-        //    return View(quizList);
-        //}
-
-
-
-
 
 
         // GET: QuizController/Details/5
@@ -213,18 +173,13 @@ namespace PerfectPolicyFrontEnd.Controllers
         public IActionResult FilterCreator(IFormCollection collection)
         {
             
-            // Retrieve filter text
             string filterText = collection["companyName"];
 
-            //var teacherList = _apiRequest.GetAll(teacherController).Where(c => c.Email.Contains(filterText)).ToList();
 
-            // retrieve a list of all teachers
             var creatorList = _apiRequest.GetAll(quizController);
 
-            // filter that list, return the results to a new list
             var filteredList = creatorList.Where(c => c.Creator.ToLower().Contains(filterText.ToLower())).ToList();
 
-            // return this list to the index page
             return View("Index", filteredList);
         }
     }

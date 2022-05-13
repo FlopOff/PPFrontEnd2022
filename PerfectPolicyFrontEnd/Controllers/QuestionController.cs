@@ -52,16 +52,6 @@ namespace PerfectPolicyFrontEnd.Controllers
 
         public ActionResult QuestionsForQuiz(string id)
         {
-            //Question question = new Question();
-            //if (question.QuizTitle == quizs.Select(c => new SelectListItem
-            //{
-            //    Text = c.Title,
-            //    Value = c.Title
-            //}).ToString())
-            //{ 
-            
-            //}
-            //WILL POSSIBLY USE IN CONNECTING QUESTION BUTTON FROM QUIZ PAGE.
 
             List <Question> questions = _apiRequest.GetAllForParentId(questionController, "QuestionsForQuizTitle", id);
             return View("Index", questions);
@@ -130,11 +120,7 @@ namespace PerfectPolicyFrontEnd.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, IFormCollection collection)
         {
-            //if (isNotAuthenticated())
-            //{
-            //    return RedirectToAction("Login", "Auth");
-            //}
-
+           
             try
             {
                 return RedirectToAction(nameof(Index));
@@ -190,15 +176,13 @@ namespace PerfectPolicyFrontEnd.Controllers
         [HttpPost]
         public async Task<IActionResult> UploadFile(IFormFile file)
         {
-            // retrieve folder path
             string folderRoot = Path.Combine(_environment.ContentRootPath, "wwwroot\\Uploads");
 
-            // combine filename and folder path
             string filePath = Path.Combine(folderRoot, file.FileName);
 
             try
             {
-                // save the file
+                
                 using (var stream = new FileStream(filePath, FileMode.Create))
                 {
                     await file.CopyToAsync(stream);

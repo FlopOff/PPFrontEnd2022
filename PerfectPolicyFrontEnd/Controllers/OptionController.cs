@@ -115,10 +115,7 @@ namespace PerfectPolicyFrontEnd.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, Option option)
         {
-            //if (isNotAuthenticated())
-            //{
-            //    return RedirectToAction("Login", "Auth");
-            //}
+          
 
             try
             {
@@ -148,10 +145,6 @@ namespace PerfectPolicyFrontEnd.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, IFormCollection collection)
         {
-            //if (isNotAuthenticated())
-            //{
-            //    return RedirectToAction("Login", "Auth");
-            //}
 
             try
             {
